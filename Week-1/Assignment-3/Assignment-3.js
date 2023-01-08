@@ -31,7 +31,7 @@ function toNumber(input) {
         number.push(5);
     }
   }
-  return number
+  return number;
 }
 
 let input1 = ['a', 'b', 'c', 'a', 'c', 'a', 'c'];
