@@ -9,14 +9,22 @@ a{
 	text-decoration: none;
 	color: #1a73e8;
 }
-button {
-	border: 1px solid;
+.button {
 	background-color: transparent;
+	box-sizing: border-box;
+	line-height: 36px;
+	display: inline-block;
+	border-radius: 4px;
+	padding: 0 16px;
 }
 main {
 	margin-top: 49px;
 }
-
+.inner {
+	margin: 0 auto;
+    max-width: 1488px;
+    padding: 0 24px;
+}
 /* navigator */
 .nav {
 	position: fixed;
@@ -150,7 +158,7 @@ main {
 	gap: 16px 0;
 	background-color: #f1f3f4;
 	height: 35%;
-	padding: 40px;
+	padding: 40px 24px;
 }
 .interest-title {
 	display: flex;
@@ -187,7 +195,7 @@ main {
 	padding: 16px;
 	flex-direction: column;
     gap: 8px;
-    flex: 1 200px;
+    flex: 1 250px;
 }
 .interest-content-item-doc-type{
 	font-size: 12px;
@@ -225,7 +233,7 @@ main {
 
 /* anything*/
 .anything {
-	padding: 40px 0;
+	padding: 40px 24px;
 }
 
 .anything-header {
@@ -260,4 +268,32 @@ main {
 }
 .anything-item-des{
 
+}
+.anything-item-button {
+	display: flex;
+	padding: 80px 0px 100px 0px;
+}
+.anything-item-button .button{
+	color:#fff;
+	background-color: #1a73e8;
+	padding: 0 16px;
+	margin: 0 auto;
+}
+.work-smarter {
+	padding: 40px 0;
+	background-color: #1a73e8;
+	color: #fff;
+	display: flex;
+	flex-direction: column;
+}
+.work-smarter h3{
+	color: #fff;
+	text-align: center;
+	font-size: 34px;
+	margin-bottom: 16px;
+}
+.work-smarter .button{
+	background-color: #fff;
+	color: #1a73e8;
+	margin: 18px auto 0;
 }
