@@ -6,7 +6,7 @@ function count(input) {
         } else {
             obj[ch] = 1;
         }
-    };
+    }
     return obj;
 };
 let input1 = ["a", "b", "c", "a", "c", "a", "x"];
@@ -24,9 +24,9 @@ function groupByKey(input) {
         } else {
             obj2[ch] = num;
         }
-    };
+    }
     return obj2;
-}
+};
 let input2 = [
 { key: "a", value: 3 },
 { key: "b", value: 1 },

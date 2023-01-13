@@ -4,7 +4,7 @@ function max(numbers){
         if (numbers[i]>max){
             max = numbers[i];
         }
-    };
+    }
     return max;
 };
 
@@ -15,10 +15,10 @@ function findPosition(numbers, target) {
             inArray = true;
             return i;
         }
-    };
+    }
     if (inArray === false){
         return -1;
-    };
+    }
 };
 
 console.log(max([1, 2, 4, 5])); // should print 5
