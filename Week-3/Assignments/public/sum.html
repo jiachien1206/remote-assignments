@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Sum the arithmetic sequence</title>
+  <script>
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function () {
+      if(xhr.readyState === 4 && xhr.status === 200) {
+        const total = JSON.parse(xhr.responseText);
+        document.getElementById('answer').innerHTML = total.toString();
+        document.getElementById("number").value = '';
+      }
+    };
+    xhr.open('GET', '/data?number=10');
+    xhr.send();
+    
+    function sendAJAX(){
+      const number = document.getElementById("number").value;
+      xhr.open('GET', '/data?number='+number);
+      xhr.send();
+    }
+  </script>
+</head>
+<body>
+    <h1>Sum the arithmetic sequence</h1>
+    <form>
+      <label class="number-prompt">
+          Enter your number
+      </label>
+      <input id="number" type="text"></input>
+      <input id="number-submit" value="Calculate" type="button" onclick="sendAJAX()"></input>
+    </form>
+    <div id="answer"></div>
+</body>
+</html>
