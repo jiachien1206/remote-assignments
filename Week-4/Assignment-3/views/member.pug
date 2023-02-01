@@ -1,0 +1,9 @@
+extends layout
+
+block main
+    div.log
+        img(src='/static/img/gxxle.png' alt='login')
+        h1 Welcome #{email}!
+        form(action="/member" method="post")
+            div.button-block
+                button(type="submit") Log out

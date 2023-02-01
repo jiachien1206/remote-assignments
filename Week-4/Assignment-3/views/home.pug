@@ -1,0 +1,15 @@
+extends layout
+
+block main 
+    div.log
+        img(src='/static/img/gxxle.png' alt='login')
+        h1 Sign in or Sign up
+        form(action='/', method='post' onsubmit='return validateForm()')
+            input(type="text" name='email' placeholder="Please fill your email" required) 
+            br
+            input(type="password" name="password" placeholder="Please fill your password" required)
+            br
+            div.button-block
+                button(type="submit" name="btn" value="signin") Sign in
+                button(type="submit" name="btn" value="signup") Sign up
+        p= text
