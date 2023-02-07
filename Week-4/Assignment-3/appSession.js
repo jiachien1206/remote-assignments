@@ -2,27 +2,24 @@ const express = require('express');
 const app = express();
 const { isUser, signUp, checkUser, pool} = require('./databaseSession.js');
 const cookieParser = require('cookie-parser');
-const session = require('express-session');
-const MySQLStore = require('express-mysql-session')(session);
+const session = require('express-session');                     // session middleware
+const MySQLStore = require('express-mysql-session')(session);   // express-mysql-session
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'pug');
 app.use(cookieParser());
 app.use('/static', express.static('public'));
 
 // session setup
-
 const sessionStore = new MySQLStore({}, pool);
-
 app.use(
     session({
         key: 'sessionID',
-        secret: 'session_cookie_secret',
+        secret: process.env.MYSQL_SECRET,
         resave: false,
         saveUninitialized: false,
-        store: sessionStore, 
+        store: sessionStore
     })
 );
-
 
 function asyncHandler(cb){
     return async(req, res, next) => {
@@ -71,7 +68,7 @@ app.post('/', asyncHandler(async (req, res) => {
             }
         }
     }
-}))
+}));
 
 app.get('/member', asyncHandler(async (req, res) => {
     const email = req.session.user;     // get email from session
@@ -80,7 +77,7 @@ app.get('/member', asyncHandler(async (req, res) => {
 
 app.post('/member', asyncHandler(async (req, res) => {
     req.session.destroy();              // delete session
-    res.clearCookie('sessionID')        // clear cookie
+    res.clearCookie('sessionID');       // clear cookie
     res.redirect('/');
 }));
 
@@ -90,5 +87,5 @@ function checkEmailFormat(email){
 }
 
 app.listen(3000, () => {
-    console.log('This application is running on local host:3000.') // To show this string on terminal to tell what's happening
+    console.log('This application is running on local host:3000.'); // To show this string on terminal to tell what's happening
 });
