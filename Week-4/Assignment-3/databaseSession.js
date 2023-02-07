@@ -11,7 +11,7 @@ const pool = mysql.createPool({
 }).promise();
 
 async function isUser(email){
-    const result = await pool.query('SELECT email FROM user WHERE email=?',[email]);
+    const result = await pool.query('SELECT email FROM user_test WHERE email=?',[email]);
     if (result[0].length === 0){
         return false; // New User
     } else{
@@ -21,13 +21,13 @@ async function isUser(email){
 
 async function signUp(email, password){
     await pool.query(`
-    INSERT INTO user (email, password)
+    INSERT INTO user_test (email, password)
     VALUES (?, SHA2(?, 224))
     `, [email, password]);
 }
 
 async function checkUser(email, password){
-    const result = await pool.query('SELECT email FROM user WHERE email=? AND password=SHA2(?, 224)',[email, password]);
+    const result = await pool.query('SELECT email FROM user_test WHERE email=? AND password=SHA2(?, 224)',[email, password]);
     if (result[0].length === 0){
         return false; // New User
     } else{

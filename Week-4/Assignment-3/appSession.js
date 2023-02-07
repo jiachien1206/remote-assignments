@@ -1,11 +1,28 @@
 const express = require('express');
 const app = express();
-const { isUser, signUp, checkUser} = require('./database.js');
+const { isUser, signUp, checkUser, pool} = require('./databaseSession.js');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'pug');
 app.use(cookieParser());
 app.use('/static', express.static('public'));
+
+// session setup
+
+const sessionStore = new MySQLStore({}, pool);
+
+app.use(
+    session({
+        key: 'sessionID',
+        secret: 'session_cookie_secret',
+        resave: false,
+        saveUninitialized: false,
+        store: sessionStore, 
+    })
+);
+
 
 function asyncHandler(cb){
     return async(req, res, next) => {
@@ -19,7 +36,11 @@ function asyncHandler(cb){
 }
 
 app.get('/', asyncHandler(async (req, res) => {
-    res.render('home');
+    if (req.session.isLoggedIn){    // Check loggedin
+        res.redirect('/member');
+    } else{
+        res.render('home');
+    }
 }));
 
 app.post('/', asyncHandler(async (req, res) => {
@@ -33,7 +54,8 @@ app.post('/', asyncHandler(async (req, res) => {
     } else{
         if (button === 'signin'){
             if (await checkUser(email, password)){
-                res.cookie('email', email);
+                req.session.isLoggedIn = true;  // set loggedin
+                req.session.user = email;       // save email in session
                 res.redirect('/member');
             }else{
                 res.render('home',{text: 'Your email or password is wrong. Please try again.'});
@@ -43,7 +65,8 @@ app.post('/', asyncHandler(async (req, res) => {
                 res.render('home',{text: 'The email already exist. Please sign-in or use a new email.'});
             } else {
                 await signUp(email, password);
-                res.cookie('email', email);
+                req.session.isLoggedIn = true;  // set loggedin
+                req.session.user = email;       // save email in session
                 res.redirect('/member');
             }
         }
@@ -51,14 +74,16 @@ app.post('/', asyncHandler(async (req, res) => {
 }))
 
 app.get('/member', asyncHandler(async (req, res) => {
-    const email = req.cookies.email;
+    const email = req.session.user;     // get email from session
     res.render('member', {email});
 }));
 
 app.post('/member', asyncHandler(async (req, res) => {
-    res.clearCookie('email');
+    req.session.destroy();              // delete session
+    res.clearCookie('sessionID')        // clear cookie
     res.redirect('/');
 }));
+
 
 function checkEmailFormat(email){
     return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
